@@ -50,7 +50,7 @@ public class BorrowerDAO extends DAO<Borrower> {
 
     @Override
     public void update(Borrower object) throws SQLException {
-        save("update tbl _borrower set name= ?, address = ?, phone = ? where cardNo = ?",
+        save("update tbl_borrower set name= ?, address = ?, phone = ? where cardNo = ?",
                 new Object[]{object.getName(),object.getAddress(),object.getPhone(),object.getCardNo()});
     }
 

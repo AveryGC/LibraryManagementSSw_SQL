@@ -44,7 +44,7 @@ public class AdminBranches {
             List<Branch> branches = bdao.read();
             boolean cont = true;
             while(cont){
-                System.out.println("Please enter the Branch you manage would like to update.");
+                System.out.println("Please enter the Branch you would like to update.");
                 System.out.print("|||||");
                 Branch.readHeader();
                 branches.forEach(b->{
