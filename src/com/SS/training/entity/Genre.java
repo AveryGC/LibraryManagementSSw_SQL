@@ -7,6 +7,18 @@ public class Genre {
     private String genreName;
     private List<Book> books;
 
+    public static void readHeader(){
+        System.out.printf("%-23s||%-30s\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n",
+                "Genre Name","Books In Genre");
+
+    }
+
+    public void read(){
+        System.out.printf("%-25s",genreName);
+        books.forEach(b-> System.out.printf("%-30s",b.getTitle()));
+        System.out.println("");
+    }
+
     public Integer getGenreID() {
         return genreID;
     }

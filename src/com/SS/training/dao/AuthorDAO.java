@@ -43,7 +43,7 @@ public class AuthorDAO extends DAO<Author> {
 
     @Override
     public Integer add(Author object) throws SQLException {
-        return saveRecieveKey("Insert into tbl_author (authorName) value (?)", new Object[]{object});
+        return saveRecieveKey("Insert into tbl_author (authorName) value (?)", new Object[]{object.getAuthorName()});
     }
 
     @Override

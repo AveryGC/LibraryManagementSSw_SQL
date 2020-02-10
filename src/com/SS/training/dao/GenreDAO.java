@@ -42,8 +42,8 @@ public class GenreDAO extends DAO<Genre> {
 
     @Override
     public Integer add(Genre object) throws SQLException {
-        return saveRecieveKey("insert into tbl_genre (genre_id,genre_name) value (?,?)",
-                new Object[]{object.getGenreID(),object.getGenreName()});
+        return saveRecieveKey("insert into tbl_genre (genre_name) value (?)",
+                new Object[]{object.getGenreName()});
     }
 
     @Override

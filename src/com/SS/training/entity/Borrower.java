@@ -9,6 +9,15 @@ public class Borrower {
     private String phone;
     private List<Loans> loans;
 
+    public static void readHeader(){
+        System.out.printf("%-28s||%-28s||%-15s||%-25s","Borrower Name","Address","Phone Number","Loans\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n");
+    }
+    public void read(){
+        System.out.printf("%-30s%-30s%-17s",name,address,phone);
+        loans.forEach(l-> System.out.printf("%-28s",l.getBook().getTitle()));
+        System.out.println();
+    }
+
     public List<Loans> getLoans() {
         return loans;
     }

@@ -46,7 +46,7 @@ public class BranchDAO extends DAO<Branch> {
 
     @Override
     public Integer add(Branch object) throws SQLException {
-        return saveRecieveKey("insert into tbl_library_branch (branchName, branchAddress) values (?,?),",
+        return saveRecieveKey("insert into tbl_library_branch (branchName, branchAddress) values (?,?)",
                 new Object[]{object.getBranchName(),object.getBranchAddress()});
     }
 

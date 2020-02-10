@@ -8,7 +8,7 @@ public class Copies {
     private Integer noOfCopies;
 
     public static void readHeader(){
-        System.out.printf("%-28s||%-58s||%-30s\n","Book Title","Authors' Names","Number of Copies");
+        System.out.printf("%-28s||%-58s||%-30s\n----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------\n","Book Title","Authors' Names","Number of Copies");
     }
     public void read(){
         System.out.printf("%-30s",book.getTitle());

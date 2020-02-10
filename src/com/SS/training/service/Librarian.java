@@ -53,7 +53,7 @@ public class Librarian {
         }
     }
 
-    protected void branchOptions(Scanner scanner, Branch branch, Connection conn) throws SQLException {
+    public void branchOptions(Scanner scanner, Branch branch, Connection conn) throws SQLException {
         boolean cont = true;
         while (cont) {
             System.out.println("++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");

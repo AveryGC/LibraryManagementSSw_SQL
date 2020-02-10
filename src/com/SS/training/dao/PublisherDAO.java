@@ -43,8 +43,8 @@ public class PublisherDAO extends DAO<Publisher> {
 
     @Override
     public Integer add(Publisher object) throws SQLException {
-        return saveRecieveKey("insert into tbl_publisher (publisherName,publisherAddress,publisherPhone," +
-                    "value (?,?,?)", new Object[]{object.getPublisherName(),object.getPublisherAddress(),object.getPublisherPhone()});
+        return saveRecieveKey("insert into tbl_publisher (publisherName,publisherAddress,publisherPhone)" +
+                    "values (?,?,?)", new Object[]{object.getPublisherName(),object.getPublisherAddress(),object.getPublisherPhone()});
     }
 
     @Override

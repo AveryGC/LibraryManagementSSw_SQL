@@ -2,7 +2,13 @@ package com.SS.training.service;
 
 
 import com.SS.training.Input.InputValidation;
+import com.SS.training.dao.*;
+import com.SS.training.entity.*;
+import com.SS.training.service.AdminSubMenus.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Admin {
@@ -12,26 +18,32 @@ public class Admin {
             System.out.println("Welcome Administrator, please select what option you would like to commit.");
             System.out.println("1.)Edit/Add Authors\n2.)Edit/Add Books\n3.)Edit/Add Genres\n4.)Edit/Add Publishers\n5.)Edit/Add Library Branches\n6.)Edit/Add Borrowers\n7.)Exit to Main");
             String line = scanner.nextLine();
-            if(InputValidation.checkInput(1,6,line)){
+            if(InputValidation.checkInput(1,7,line)){
                 int input =Integer.parseInt(line);
                 switch (input){
                     case 1:
-                        System.out.println("author");
+                        AdminAuthor author = new AdminAuthor();
+                        author.adminAuthor(scanner);
                         break;
                     case 2:
-                        System.out.println("books");
+                        AdminBook book = new AdminBook();
+                        book.adminBook(scanner);
                         break;
                     case 3:
-                        System.out.println("genres");
+                        AdminGenres genre = new AdminGenres();
+                        genre.adminGenre(scanner);
                         break;
                     case 4:
-                        System.out.println("publishers");
+                        AdminPublisher publisher = new AdminPublisher();
+                        publisher.adminPublishers(scanner);
                         break;
                     case 5:
-                        System.out.println("Branches");
+                        AdminBranches branches = new AdminBranches();
+                        branches.adminBranches(scanner);
                         break;
                     case 6:
-                        System.out.println("Borrowers");
+                        AdminBorrower borrower = new AdminBorrower();
+                        borrower.adminBorrowers(scanner);
                         break;
                     case 7:
                         cont=false;
@@ -44,8 +56,11 @@ public class Admin {
         }
     }
 
-    protected void adminAuthor(Scanner scanner){
-        System.out.println("Select what action you would like to execute:");
-        System.out.println("1.)Add Author\n2.)Delete Author\n3.)Update Author\n4.)Read All Authors";
-    }
+
+
+
+
+
+
+
 }

@@ -7,7 +7,6 @@ import com.SS.training.service.BorrowerMenu;
 import com.SS.training.service.ConnectUtil;
 import com.SS.training.service.Librarian;
 
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {

@@ -34,12 +34,12 @@ public abstract class DAO<T> {
                 index++;
             }
         }
-        ResultSet rs = pstmt.executeQuery();
-        Integer key = null;
+        pstmt.executeUpdate();
+        ResultSet rs = pstmt.getGeneratedKeys();
         while(rs.next()){
-            key = rs.getInt(1);
+            return rs.getInt(1);
         }
-        return key;
+        return null;
     }
 
     protected List<T> read(String sql, Object[] vals) throws SQLException {
