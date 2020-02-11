@@ -2,12 +2,7 @@ package com.SS.training.service.AdminSubMenus;
 
 import com.SS.training.Input.InputValidation;
 import com.SS.training.dao.AuthorDAO;
-import com.SS.training.dao.BorrowerDAO;
-import com.SS.training.dao.GenreDAO;
 import com.SS.training.entity.Author;
-import com.SS.training.entity.Borrower;
-import com.SS.training.entity.Branch;
-import com.SS.training.entity.Genre;
 import com.SS.training.service.ConnectUtil;
 
 import java.sql.Connection;
