@@ -23,7 +23,7 @@ public class AdminAuthor {
                 if(input==1){
                     adminAddAuthor(scanner);
                 }else if(input==2){
-                    System.out.println("delete");
+                    adminDeleteAuthor(scanner);
                 }else if(input==3){
                     adminUpdateAuthor(scanner);
                 }else if(input==4){
@@ -34,6 +34,75 @@ public class AdminAuthor {
                 }
             }
         }
+    }
+    protected void adminDeleteAuthor(Scanner scanner) {
+        try{
+            ConnectUtil conUtil = ConnectUtil.getInstance();
+            Connection conn = conUtil.getConnection();
+            AuthorDAO adao = new AuthorDAO(conn);
+            List<Author> authors = adao.read();
+            boolean cont = true;
+            while(cont){
+                System.out.println("Please enter the Author you would like to DELETE.");
+                System.out.print("|||||");
+                Author.readHeader();
+                authors.forEach(a->{
+                    System.out.print((authors.indexOf(a)+1)+".)");
+                    a.read();
+                });
+                System.out.println((authors.size()+1)+".)exit");
+                String line = scanner.nextLine();
+                if(InputValidation.checkInput(1,(authors.size()+1),line)){
+                    int input = Integer.parseInt(line);
+                    if(input==(authors.size()+1)){
+                        System.out.println("Canceling Update");
+                        cont=false;
+                    }
+                    else{
+                        Author deleteAut = authors.get(input-1);
+                        if(deleteAut.getBooks().size()==0){
+                            deleteAuthor(deleteAut,conn);
+                        }else{
+                            deleteAut.getBooks().forEach(b-> System.out.println(b.getTitle()));
+                            System.out.println("Are you sure, all these books will be deleted.Enter 1 for YES and 2 for NO");
+                            boolean cont2 = true;
+                            while(cont2){
+                                line = scanner.nextLine();
+                                if(InputValidation.checkInput(1,2,line)){
+                                    input = Integer.parseInt(line);
+                                    if(input==1)
+                                        deleteAuthor(deleteAut,conn);
+                                    if(input==2){
+                                        System.out.println("Operation Cancelled");
+                                        cont2=false;
+                                    }
+                                }
+                            }
+                        }
+                        cont=false;
+                    }
+                }
+                else {
+                    System.out.println("!!!!!Improper Input Format!!!!");
+                }
+            }
+        }catch (SQLException e){
+            System.out.println("!!!Error With Database!!!!");
+        }catch (ClassNotFoundException e){
+            System.out.println("!!!!Error with Database Driver!!!!");
+        }
+    }
+    protected void deleteAuthor(Author author, Connection conn){
+        try {
+            try {
+                AuthorDAO adao = new AuthorDAO(conn);
+                adao.delete(author);
+                conn.commit();
+            } catch (SQLException e) {
+                System.out.println("!!!DATABASE ERROR!!!!");
+                conn.rollback();
+            }
+        }catch (SQLException e){}
     }
     protected void adminUpdateAuthor(Scanner scanner) {
         try{

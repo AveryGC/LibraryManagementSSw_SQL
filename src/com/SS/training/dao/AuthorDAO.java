@@ -53,7 +53,7 @@ public class AuthorDAO extends DAO<Author> {
 
     @Override
     public void delete(Author object) throws SQLException {
-        save("delete from tbl_author where authorID = ?", new Object[]{object});
+        save("delete from tbl_author where authorID = ?", new Object[]{object.getAuthorID()});
     }
 
     @Override

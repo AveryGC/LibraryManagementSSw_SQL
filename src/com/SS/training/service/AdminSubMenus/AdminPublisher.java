@@ -2,6 +2,7 @@ package com.SS.training.service.AdminSubMenus;
 
 import com.SS.training.Input.InputValidation;
 import com.SS.training.dao.PublisherDAO;
+import com.SS.training.entity.Author;
 import com.SS.training.entity.Publisher;
 import com.SS.training.service.ConnectUtil;
 
@@ -23,7 +24,7 @@ public class AdminPublisher {
                 if(input==1){
                     adminAddPublisher(scanner);
                 }else if(input==2){
-                    System.out.println("delete");
+                    adminDeletePublisher(scanner);
                 }else if(input==3){
                     adminUpdatePublisher(scanner);
                 }else if(input==4){
@@ -34,6 +35,75 @@ public class AdminPublisher {
                 }
             }
         }
+    }
+    protected void adminDeletePublisher(Scanner scanner) {
+        try{
+            ConnectUtil conUtil = ConnectUtil.getInstance();
+            Connection conn = conUtil.getConnection();
+            PublisherDAO pdao = new PublisherDAO(conn);
+            List<Publisher> publishers = pdao.read();
+            boolean cont = true;
+            while(cont){
+                System.out.println("Please enter the Author you would like to DELETE.");
+                System.out.print("|||||");
+                Author.readHeader();
+                publishers.forEach(p->{
+                    System.out.print((publishers.indexOf(p)+1)+".)");
+                    p.read();
+                });
+                System.out.println((publishers.size()+1)+".)exit");
+                String line = scanner.nextLine();
+                if(InputValidation.checkInput(1,(publishers.size()+1),line)){
+                    int input = Integer.parseInt(line);
+                    if(input==(publishers.size()+1)){
+                        System.out.println("Canceling Update");
+                        cont=false;
+                    }
+                    else{
+                        Publisher deletePub = publishers.get(input-1);
+                        if(deletePub.getBooks().size()==0){
+                            deletePublisher(deletePub,conn);
+                        }else{
+                            deletePub.getBooks().forEach(b-> System.out.println(b.getTitle()));
+                            System.out.println("Are you sure, all these books will be deleted.Enter 1 for YES and 2 for NO");
+                            boolean cont2 = true;
+                            while(cont2){
+                                line = scanner.nextLine();
+                                if(InputValidation.checkInput(1,2,line)){
+                                    input = Integer.parseInt(line);
+                                    if(input==1)
+                                        deletePublisher(deletePub,conn);
+                                    if(input==2){
+                                        System.out.println("Operation Cancelled");
+                                        cont2=false;
+                                    }
+                                }
+                            }
+                        }
+                        cont=false;
+                    }
+                }
+                else {
+                    System.out.println("!!!!!Improper Input Format!!!!");
+                }
+            }
+        }catch (SQLException e){
+            System.out.println("!!!Error With Database!!!!");
+        }catch (ClassNotFoundException e){
+            System.out.println("!!!!Error with Database Driver!!!!");
+        }
+    }
+    protected void deletePublisher(Publisher publisher, Connection conn){
+        try {
+            try {
+                PublisherDAO pdao = new PublisherDAO(conn);
+                pdao.delete(publisher);
+                conn.commit();
+            } catch (SQLException e) {
+                System.out.println("!!!DATABASE ERROR!!!!");
+                conn.rollback();
+            }
+        }catch (SQLException e){}
     }
     protected void adminUpdatePublisher(Scanner scanner) {
         try{
