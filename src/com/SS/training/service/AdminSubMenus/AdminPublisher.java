@@ -44,7 +44,7 @@ public class AdminPublisher {
             List<Publisher> publishers = pdao.read();
             boolean cont = true;
             while(cont){
-                System.out.println("Please enter the Author you would like to DELETE.");
+                System.out.println("Please enter the Publisher you would like to DELETE.");
                 System.out.print("|||||");
                 Author.readHeader();
                 publishers.forEach(p->{
@@ -75,8 +75,8 @@ public class AdminPublisher {
                                         deletePublisher(deletePub,conn);
                                     if(input==2){
                                         System.out.println("Operation Cancelled");
-                                        cont2=false;
                                     }
+                                    cont2=false;
                                 }
                             }
                         }

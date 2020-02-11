@@ -2,7 +2,10 @@ package com.SS.training.service.AdminSubMenus;
 
 import com.SS.training.Input.InputValidation;
 import com.SS.training.dao.BranchDAO;
+import com.SS.training.dao.PublisherDAO;
+import com.SS.training.entity.Author;
 import com.SS.training.entity.Branch;
+import com.SS.training.entity.Publisher;
 import com.SS.training.service.ConnectUtil;
 import com.SS.training.service.Librarian;
 
@@ -24,7 +27,7 @@ public class AdminBranches {
                 if(input==1){
                     adminAddBranches(scanner);
                 }else if(input==2){
-                    System.out.println("delete");
+                    adminDeleteBranch(scanner);
                 }else if(input==3){
                     adminUpdateBranch(scanner);
                 }else if(input==4){
@@ -35,6 +38,76 @@ public class AdminBranches {
                 }
             }
         }
+    }
+    protected void adminDeleteBranch(Scanner scanner) {
+        try{
+            ConnectUtil conUtil = ConnectUtil.getInstance();
+            Connection conn = conUtil.getConnection();
+            BranchDAO bdao = new BranchDAO(conn);
+            List<Branch> branches = bdao.read();
+            boolean cont = true;
+            while(cont){
+                System.out.println("Please enter the Branches you would like to DELETE.");
+                System.out.print("|||||");
+                Branch.readHeader();
+                branches.forEach(b->{
+                    System.out.print((branches.indexOf(b)+1)+".)");
+                    b.read();
+                });
+                System.out.println((branches.size()+1)+".)exit");
+                String line = scanner.nextLine();
+                if(InputValidation.checkInput(1,(branches.size()+1),line)){
+                    int input = Integer.parseInt(line);
+                    if(input==(branches.size()+1)){
+                        System.out.println("Canceling Update");
+                        cont=false;
+                    }
+                    else{
+                        Branch deleteBran = branches.get(input-1);
+                        if(deleteBran.getLoans().size()==0 && deleteBran.getCopies().size()==0){
+                            deleteBranch(deleteBran,conn);
+                        }else{
+                            deleteBran.getLoans().forEach(b-> System.out.println( b.getBorrower().getName()+ "is currently owned by" + b.getBook().getTitle() ));
+                            deleteBran.getCopies().forEach(c-> System.out.println("Currently have "+ c.getNoOfCopies()+ " copies of " + c.getBook().getTitle()));
+                            System.out.println("Are you sure, all these books will be deleted.Enter 1 for YES and 2 for NO");
+                            boolean cont2 = true;
+                            while(cont2){
+                                line = scanner.nextLine();
+                                if(InputValidation.checkInput(1,2,line)){
+                                    input = Integer.parseInt(line);
+                                    if(input==1)
+                                        deleteBranch(deleteBran,conn);
+                                    if(input==2){
+                                        System.out.println("Operation Cancelled");
+                                    }
+                                    cont2=false;
+                                }
+                            }
+                        }
+                        cont=false;
+                    }
+                }
+                else {
+                    System.out.println("!!!!!Improper Input Format!!!!");
+                }
+            }
+        }catch (SQLException e){
+            System.out.println("!!!Error With Database!!!!");
+        }catch (ClassNotFoundException e){
+            System.out.println("!!!!Error with Database Driver!!!!");
+        }
+    }
+    protected void deleteBranch(Branch branch, Connection conn){
+        try {
+            try {
+                BranchDAO bdao = new BranchDAO(conn);
+                bdao.delete(branch);
+                conn.commit();
+            } catch (SQLException e) {
+                System.out.println("!!!DATABASE ERROR!!!!");
+                conn.rollback();
+            }
+        }catch (SQLException e){}
     }
     protected void adminUpdateBranch(Scanner scanner){
         try{

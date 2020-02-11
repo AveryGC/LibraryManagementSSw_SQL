@@ -2,13 +2,9 @@ package com.SS.training.service;
 
 
 import com.SS.training.Input.InputValidation;
-import com.SS.training.dao.*;
-import com.SS.training.entity.*;
 import com.SS.training.service.AdminSubMenus.*;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.List;
+
 import java.util.Scanner;
 
 public class Admin {

@@ -74,8 +74,8 @@ public class AdminAuthor {
                                         deleteAuthor(deleteAut,conn);
                                     if(input==2){
                                         System.out.println("Operation Cancelled");
-                                        cont2=false;
                                     }
+                                    cont2=false;
                                 }
                             }
                         }

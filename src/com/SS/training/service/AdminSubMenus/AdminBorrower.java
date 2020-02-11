@@ -23,7 +23,7 @@ public class AdminBorrower {
                 if(input==1){
                     adminAddBorrower(scanner);
                 }else if(input==2){
-                    System.out.println("delete");
+                    adminDeleteBorrower(scanner);
                 }else if(input==3){
                     adminUpdateBorrowers(scanner);
                 }else if(input==4){
@@ -34,6 +34,75 @@ public class AdminBorrower {
                 }
             }
         }
+    }
+    protected void adminDeleteBorrower(Scanner scanner) {
+        try{
+            ConnectUtil conUtil = ConnectUtil.getInstance();
+            Connection conn = conUtil.getConnection();
+            BorrowerDAO bdao = new BorrowerDAO(conn);
+            List<Borrower> borrowers = bdao.read();
+            boolean cont = true;
+            while(cont){
+                System.out.println("Please enter the Borrower you would like to DELETE.");
+                System.out.print("|||||");
+                Borrower.readHeader();
+                borrowers.forEach(b->{
+                    System.out.print((borrowers.indexOf(b)+1)+".)");
+                    b.read();
+                });
+                System.out.println((borrowers.size()+1)+".)exit");
+                String line = scanner.nextLine();
+                if(InputValidation.checkInput(1,(borrowers.size()+1),line)){
+                    int input = Integer.parseInt(line);
+                    if(input==(borrowers.size()+1)){
+                        System.out.println("Canceling Update");
+                        cont=false;
+                    }
+                    else{
+                        Borrower deleteBor = borrowers.get(input-1);
+                        if(deleteBor.getLoans().size()==0){
+                            deleteBorrower(deleteBor,conn);
+                        }else{
+                            deleteBor.getLoans().forEach(b-> System.out.println(b.getBook().getTitle() +" @ "+b.getBranch().getBranchName()));
+                            System.out.println("Are you sure, all these books loans will be deleted.Enter 1 for YES and 2 for NO");
+                            boolean cont2 = true;
+                            while(cont2){
+                                line = scanner.nextLine();
+                                if(InputValidation.checkInput(1,2,line)){
+                                    input = Integer.parseInt(line);
+                                    if(input==1)
+                                        deleteBorrower(deleteBor,conn);
+                                    if(input==2){
+                                        System.out.println("Operation Cancelled");
+                                    }
+                                    cont2=false;
+                                }
+                            }
+                        }
+                        cont=false;
+                    }
+                }
+                else {
+                    System.out.println("!!!!!Improper Input Format!!!!");
+                }
+            }
+        }catch (SQLException e){
+            System.out.println("!!!Error With Database!!!!");
+        }catch (ClassNotFoundException e){
+            System.out.println("!!!!Error with Database Driver!!!!");
+        }
+    }
+    protected void deleteBorrower(Borrower borrower, Connection conn){
+        try {
+            try {
+                BorrowerDAO bdao = new BorrowerDAO(conn);
+                bdao.delete(borrower);
+                conn.commit();
+            } catch (SQLException e) {
+                System.out.println("!!!DATABASE ERROR!!!!");
+                conn.rollback();
+            }
+        }catch (SQLException e){}
     }
     protected void adminUpdateBorrowers(Scanner scanner) {
         try{
